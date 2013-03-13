@@ -107,3 +107,5 @@ MIN-MAX-TRACKING:
   Stores min and max value ever assigned to this fixed-point instance.
   Tracking can be disabled by setting:
     $fixedpnt_track_min_max = false ;
+
+I used it with Ruby 1.8.7 and 1.9.3. 
