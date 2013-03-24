@@ -1,24 +1,13 @@
 # encoding: windows-1252 :encoding=Windows-1252: 
-# 
-# Binary Fixed Point calculations with Ruby, Version 0.0.1 
-# Copyright (C) 2013  Axel Friedrich <axel(dot)friedrich(underscore)smail(at)gmx(dot)de>
-#  
-#  This program is free software; you can redistribute it and/or modify it under
-#  the terms of the GNU General Public License as published by the Free Software
-#  Foundation; either version 3 of the License, or (at your option) any later
-#  version. 
-#  
-#  This program is distributed in the hope that it will be useful, but WITHOUT ANY
-#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-#  PARTICULAR PURPOSE. See the GNU General Public License for more details. 
-#  
-#  You should have received a copy of the GNU General Public License along with
-#  this program; if not, see <http://www.gnu.org/licenses/>.
 
 $fixedpnt_track_min_max ||= false
 
 ##########################################################################
 ##########################################################################
+# == DESCRIPTION
+# 
+# Binary Fixed Point calculations with Ruby.
+# 
 # This code is deeply inspired by:
 # * Phil Tomson: fixedpt.rb: http://rubyforge.org/projects/fixedpt/
 # Thank you to Brian Candler for giving me very helpfull tips:
@@ -27,31 +16,7 @@ $fixedpnt_track_min_max ||= false
 # http://en.wikipedia.org/wiki/Fixed-point_arithmetic
 # 
 # 
-# EXAMPLE USAGE:
-#   require 'fixedpnt'
-#   include FixedPntModule
-#   $fixedpnt_track_min_max = true
-# 
-#   a = fp(64, 8) 
-#   b = fp(64, 8) 
-#   c = fp
-#   
-#   100000.times do |i| 
-#     a.assign( i )
-#     b.assign( 2.2 * i ) 
-#     if  i > 50000 
-#       c.is a - b 
-#     else 
-#       c.is a + b 
-#     end 
-#   end    
-# 
-#   puts "a.abs_min_max = "  + a.abs_min_max.inspect  #=> [0.0, 99999.0]
-#   puts "b.abs_min_max = "  + b.abs_min_max.inspect  #=> [0.0, 219997.796875] 
-#   puts "c.abs_min_max = "  + c.abs_min_max.inspect  #=> [-119998.796875, 160000.0]
-#   puts "c.format = " + c.format.inspect   #=> [65, 57, 8]
-#   p required_fp_format(0.001, 220000)     #=> [30, 10]
-# 
+# == FEATURES/PROBLEMS:
 # 
 # GOALS: 
 # * Simulating fixed point calculations done in hardware
@@ -73,6 +38,38 @@ $fixedpnt_track_min_max ||= false
 # * no rounding; 
 # * SIGNED only.
 # * As of now, NO DIVISION (I did not need it)
+# 
+# KNOWN ISSUES:
+# * Exception raising on overflow isn't well done.
+# 
+# 
+# == SYNOPSIS:
+# 
+# EXAMPLE USAGE:
+#   require 'fixedpnt'
+#   include FixedPntModule
+#   $fixedpnt_track_min_max = true
+#   
+#   a = fp(64, 8) 
+#   b = fp(64, 8) 
+#   c = fp
+#   
+#   10000.times do |i| 
+#     a.assign( i )
+#     b.assign( 2.2 * i ) 
+#     if  i > 5000 
+#       c.is a - b 
+#     else 
+#       c.is a + b 
+#     end 
+#   end    
+#   
+#   puts "a.abs_min_max = "  + a.abs_min_max.inspect  #=> [0.0, 99999.0]
+#   puts "b.abs_min_max = "  + b.abs_min_max.inspect  #=> [0.0, 219997.796875] 
+#   puts "c.abs_min_max = "  + c.abs_min_max.inspect  #=> [-119998.796875, 160000.0]
+#   puts "c.format = " + c.format.inspect   #=> [65, 57, 8]
+#   p required_fp_format(0.001, 220000)     #=> [30, 10]
+# 
 # 
 # GENERAL USAGE: 
 # 
@@ -128,8 +125,43 @@ $fixedpnt_track_min_max ||= false
 #   Stores min and max value ever assigned to this fixed-point instance.
 #   Tracking can be disabled by setting:
 #     $fixedpnt_track_min_max = false ;
-#
-# I used it with Ruby 1.8.7 and 1.9.3. 
+# 
+# 
+# == REQUIREMENTS:
+# 
+# * Ruby 1.8.7 or higher
+# 
+# (I used it with Ruby 1.8.7 and 1.9.3.)
+# 
+# 
+# == INSTALL:
+# 
+# * sudo gem install fixedpnt
+# 
+# == LICENSE:
+# 
+# (The MIT License)
+# 
+# Copyright (c) 2013 Axel Friedrich and contributors (see the CONTRIBUTORS file)
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# 'Software'), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 # FOR INFORMATION: 
 # 
@@ -158,6 +190,8 @@ $fixedpnt_track_min_max ||= false
 #   * @bits=@frac_width=@int_width=nil  if FixedPnt.new(nil, nil)  # for format-inheritance 
 #  
 class FixedPnt
+  VERSION = "0.0.2"
+
   attr_reader  :bits, :int_width, :frac_width 
   attr_accessor  :stored_int, :min_assigned_int, :max_assigned_int
 
@@ -176,8 +210,8 @@ class FixedPnt
     @max_stored_int = nil # max allowed value of the stored integer for the given format. 
     @min_stored_int = nil # min allowed value of the stored integer for the given format. 
     @int_width = @bits - @frac_width if @frac_width # Width of the integer part ("part left of binary point") of the stored integer incl. 1 Bit for sign 
-    @min_assigned_int =  999999999 # min value (as stored integer), which was tried to be assigned to this fixed-point. TODO: Replace 999999999.
-    @max_assigned_int = -999999999 # min value (as stored integer), which was tried to be assigned to this fixed-point. TODO: Replace 999999999.
+    @min_assigned_int =  nil # min value (as stored integer), which was tried to be assigned to this fixed-point. TODO: Replace 999999999.
+    @max_assigned_int = nil # max value (as stored integer), which was tried to be assigned to this fixed-point. TODO: Replace 999999999.
     
     self.assign(value) if value
   end # initialize
@@ -205,6 +239,7 @@ class FixedPnt
 
     self 
   end # assign
+  alias :[]=  :assign
 
   ##################################################################
   # Convert  fixed_point  into another fixed-point format ("resize").
@@ -422,16 +457,12 @@ class FixedPnt
 
   
   def track_min_max__(  ) # for internal use only!
-    if @stored_int < @min_assigned_int
+    if !@min_assigned_int ||  @stored_int < @min_assigned_int
       @min_assigned_int = @stored_int
-    else
-      @min_assigned_int = @min_assigned_int
     end
     
-    if @stored_int > @max_assigned_int
+    if !@max_assigned_int ||  @stored_int > @max_assigned_int
       @max_assigned_int = @stored_int
-    else
-      @max_assigned_int = @max_assigned_int
     end
                                 
     ## @min_assigned_int = [@stored_int, @min_assigned_int].min # Probably slower 
@@ -563,173 +594,19 @@ end
 ##########################################################################
 ##########################################################################
 if $0 == __FILE__
-  puts
-  puts "="*60
+
   include FixedPntModule
-$fixedpnt_track_min_max = true
-
-  f = FixedPnt.new(32,16)
-  x = 3
-p f.assign( x )
-  puts f.to_binary
-
-
-  f = FixedPnt.new(32,16)
-  x = 3.5
-p f.assign( x )
-  puts f.to_binary
-
-
-  f = FixedPnt.new(32,16)
-  x = -3.5
-p f.assign( x )
-  puts f.to_binary
-
-
-  puts '-------------overflow?'
-  f = FixedPnt.new(3,0)
-p f.assign( 3 )
-  puts f.to_binary
-
-  f = FixedPnt.new(4,1)
-p f.assign( 3 )
-  puts f.to_binary
-
-  puts 'neg'
-  f = fp(3,0)
-  p f.assign( -3 )
-  puts f.to_binary
-
-
-  puts '###################### misc'
-
-p f = fp(4,0)
-puts sprintf("--DEBUG: f.class : %1s ", f.class.inspect)   #loe
-p( (f.assign( 2).class ) )
-p g = (f.assign( 2) ) # TODO: Does not work!
-puts sprintf("--DEBUG: g : %1s ", g.class.inspect)   #loe
-
-
-puts '###################### misc'
-
-f = fp(4,0)
-f.assign( 2 )
-puts sprintf("--DEBUG: f.to_binary : %1s ", (f.to_binary).inspect)   #loe
-p f.class
-
-g = fp(4,0)
-g.assign( 3 )
-
-z = fp
-z.is f + g
-p z.to_f
-p z
-puts z.to_binary
-puts sprintf("--DEBUG: z.format : %1s ", z.format.inspect)   #loe
-
-# z.is g # must raise
-
-
-  puts '###################### unary - '
-  x = fp(4,0)
-  x.assign( 3 )
-p  y = -x
-  puts y.to_binary
-  p y.to_f
-
-
-  puts '###################### substract'
-  x = fp(4, 0)
-  y = fp(4, 0)
-  x.assign( 3 )
-  y.assign( 5 )
-p  z = x - y
-  puts z.to_binary
-  p z.to_f
-
-
-  puts '###################### multiply'
-  x = fp(4, 1)
-  y = fp(4, 1)
-  x.assign( -3 )
-  y.assign( 3 )
-  z = x * y
-  puts z.to_binary
-  p z.to_f
-  puts "x.format = " + x.format.inspect
-  puts "y.format = " + y.format.inspect
-  puts "z.format = " + z.format.inspect
-
-  puts '###################### to_i'
-  y = -12.25
-  x = fp(32, 16)
-  x.assign( y )
-  p x.to_f
-  p x.to_i
-  puts "for comparison, Fixnum:"
-  p i = y
-  p i.to_f
-  p i.to_i
-
-
-  puts '###################### _= '
-p  x = fp(4, 0)
-p x.object_id
-  x.assign(3 )
-  y = fp(4, 0)
-  y.assign( 5 )
-p x.object_id
-  x.is y 
-  p x
-  puts x.to_binary
-  p x.to_f
-  p x.relative_min_max
-  p x.abs_min_max
-
-  puts '###################### track_min_max'
-  x = fp(10,9)
-  y = fp(10,9)
-
-  [0.5, 0.9 , 0.1, -0.3].each {|val|
-    x.assign( val )
-    y.is( -x )
-    # y = FixedPnt.new(val, 1,10,9)
-    # p y.to_f
-    # x.update(y)
-  }
-  p :x
-  p x.limits
-  p x.abs_min_max
-  p x.relative_min_max
-
-  p :y
-  p y.limits
-  p y.abs_min_max
-  p y.relative_min_max
-
-  puts '###################### track_min_max'
-  x = FixedPnt.new(32, 20)
-
-  [0.5, 0.9 , 0.1, -0.3, 0.2].each {|val|
-    x.assign( val )
-    # y = FixedPnt.new(val, 1,10,9)
-    # p y.to_f
-    # x.update(y)
-  }
-  p :x
-  p x.limits
-  p x.abs_min_max
-  p x.relative_min_max
+  $fixedpnt_track_min_max = true
 
   puts '###################### EXAMPLE USAGE '
   a = fp(64, 8) 
   b = fp(64, 8) 
   c = fp
   
-  100000.times do |i| 
-    a.assign( i )
-    b.assign( 2.2 * i ) 
-    if  i > 50000 
+  10000.times do |j| 
+    a.assign( j )
+    b.assign( 2.2 * j ) 
+    if  j > 5000 
       c.is  a - b 
     else 
       c.is a + b 
@@ -743,6 +620,6 @@ p x.object_id
 
   # Calculates the required Fixed-Point format for given
   # smallest_representable_value and biggest_overall_value.
-  p required_fp_format(0.001, 220000)              
+  p required_fp_format(0.001, 22000)              
 
 end

@@ -1,0 +1,12 @@
+
+
+=== 0.0.2 / 2013-03-24
+
+* alias :[]=  :assign
+* Changed license to MIT
+* Added CONTRIBUTORS file
+
+=== 0.0.1 / 2013-03-13
+
+* First release.
+

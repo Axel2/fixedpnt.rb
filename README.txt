@@ -1,3 +1,9 @@
+= fixedpnt
+
+== DESCRIPTION
+
+Binary Fixed Point calculations with Ruby.
+
 This code is deeply inspired by:
 * Phil Tomson: fixedpt.rb: http://rubyforge.org/projects/fixedpt/
 Thank you to Brian Candler for giving me very helpfull tips:
@@ -6,31 +12,7 @@ If you want to know what fixed point numbers are, you can read this:
 http://en.wikipedia.org/wiki/Fixed-point_arithmetic
 
 
-EXAMPLE USAGE:
-  require 'fixedpnt'
-  include FixedPntModule
-  $fixedpnt_track_min_max = true
-
-  a = fp(64, 8) 
-  b = fp(64, 8) 
-  c = fp
-  
-  100000.times do |i| 
-    a.assign( i )
-    b.assign( 2.2 * i ) 
-    if  i > 50000 
-      c.is a - b 
-    else 
-      c.is a + b 
-    end 
-  end    
-
-  puts "a.abs_min_max = "  + a.abs_min_max.inspect  #=> [0.0, 99999.0]
-  puts "b.abs_min_max = "  + b.abs_min_max.inspect  #=> [0.0, 219997.796875] 
-  puts "c.abs_min_max = "  + c.abs_min_max.inspect  #=> [-119998.796875, 160000.0]
-  puts "c.format = " + c.format.inspect   #=> [65, 57, 8]
-  p required_fp_format(0.001, 220000)     #=> [30, 10]
-
+== FEATURES/PROBLEMS:
 
 GOALS: 
 * Simulating fixed point calculations done in hardware
@@ -52,6 +34,38 @@ IT HAS _NOT_:
 * no rounding; 
 * SIGNED only.
 * As of now, NO DIVISION (I did not need it)
+
+KNOWN ISSUES:
+* Exception raising on overflow isn't well done.
+
+
+== SYNOPSIS:
+
+EXAMPLE USAGE:
+  require 'fixedpnt'
+  include FixedPntModule
+  $fixedpnt_track_min_max = true
+  
+  a = fp(64, 8) 
+  b = fp(64, 8) 
+  c = fp
+  
+  10000.times do |i| 
+    a.assign( i )
+    b.assign( 2.2 * i ) 
+    if  i > 5000 
+      c.is a - b 
+    else 
+      c.is a + b 
+    end 
+  end    
+  
+  puts "a.abs_min_max = "  + a.abs_min_max.inspect  #=> [0.0, 99999.0]
+  puts "b.abs_min_max = "  + b.abs_min_max.inspect  #=> [0.0, 219997.796875] 
+  puts "c.abs_min_max = "  + c.abs_min_max.inspect  #=> [-119998.796875, 160000.0]
+  puts "c.format = " + c.format.inspect   #=> [65, 57, 8]
+  p required_fp_format(0.001, 220000)     #=> [30, 10]
+
 
 GENERAL USAGE: 
 
@@ -108,4 +122,39 @@ MIN-MAX-TRACKING:
   Tracking can be disabled by setting:
     $fixedpnt_track_min_max = false ;
 
-I used it with Ruby 1.8.7 and 1.9.3. 
+
+== REQUIREMENTS:
+
+* Ruby 1.8.7 or higher
+
+(I used it with Ruby 1.8.7 and 1.9.3.)
+
+
+== INSTALL:
+
+* sudo gem install fixedpnt
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2013 Axel Friedrich and contributors (see the CONTRIBUTORS file)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

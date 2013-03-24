@@ -1,0 +1,9 @@
+.autotest
+LICENSE
+CONTRIBUTORS
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+lib/fixedpnt.rb
+test/test_fixedpnt.rb
