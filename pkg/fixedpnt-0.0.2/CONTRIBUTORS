@@ -1,0 +1,16 @@
+This code is deeply inspired by:
+* Phil Tomson: fixedpt.rb: http://rubyforge.org/projects/fixedpt/
+
+Thank you to Brian Candler for giving me very helpfull tips:
+http://www.ruby-forum.com/topic/4408936#new
+
+Joel VanderWerf showed me an interesting way of using "[]=" instead of ".assigne":
+http://www.ruby-forum.com/topic/4412205#new
+
+Adam Prescott and Grant Olson helped me finding a way through the license-jungle:
+http://www.ruby-forum.com/topic/4412205#new
+
+Last but not least: Ryan Davis teached me how to make all that gemmable.
+
+
+Any contributions will be assumed to be under the same terms as this library.
