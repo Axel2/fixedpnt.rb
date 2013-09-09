@@ -138,7 +138,7 @@ MIN-MAX-TRACKING:
 
 == INSTALL:
 
-* sudo gem install fixedpnt
+* gem install fixedpnt
 
 == LICENSE:
 
